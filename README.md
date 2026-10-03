@@ -36,7 +36,7 @@ A ordem, os tempos e os tipos de slide ficam em [`sequence.json`](sequence.json)
 | <img src="docs/screenshots/arena-dinobyte-penlinux.png" alt="DinoByte e PenLinux frente a frente na arena 3D" width="420" /> | <img src="docs/screenshots/inicio-combate.png" alt="Tela de início do combate na arena" width="420" /> |
 
 | Turno da IA |
-| --- | --- |
+| --- |
 | <img src="docs/screenshots/interface-turno-ia.png" alt="Interface da batalha durante turno da IA, com vida e câmera" width="420" /> |
 
 As fotos e capturas da apresentação estão em [`docs/screenshots/`](docs/screenshots/). As quatro imagens originais de 24 de julho de 2026 registram uma execução anterior; a imagem da cinemática foi adicionada depois.
