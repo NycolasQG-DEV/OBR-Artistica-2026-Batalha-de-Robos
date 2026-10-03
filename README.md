@@ -1,6 +1,6 @@
-<h1 align="center">DinoByte & PenLinux</h1>
+<h1 align="center">OBR Artística 2026 · Batalha de Robôs</h1>
 
-<p align="center"><strong>Apresentação interativa e arena robótica 3D · OBR 2026 · Etapa regional</strong></p>
+<p align="center"><strong>Cinemática, interação com o público e combate entre DinoByte e PenLinux no telão da etapa regional</strong></p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
@@ -10,32 +10,58 @@
   <img src="https://img.shields.io/badge/ESP32-000000?style=for-the-badge&logo=espressif&logoColor=white" alt="ESP32" />
 </p>
 
-<p align="center"><img src="docs/screenshots/abertura-dino-byte.png" alt="Abertura do projeto com DinoByte e PenLinux na arena" width="820" /></p>
+<p align="center"><img src="docs/screenshots/cinematica-abertura-2026.png" alt="Cena da cinemática de abertura exibida no telão da OBR Artística 2026" width="820" /></p>
 
-Projeto usado na minha apresentação da **Olimpíada Brasileira de Robótica (OBR) em 2026, na etapa regional**. A experiência combina uma apresentação multimídia, interação por câmera, escolha de personagem, comandos para robôs e uma batalha em uma arena 3D. Este repositório preserva o código, os recursos e os registros visuais dessa versão do projeto.
+Sistema integrado ao **telão da OBR Artística 2026**, na etapa regional. A apresentação começa com uma cinemática, envolve o público na escolha entre **DinoByte** e **PenLinux** e conduz uma batalha de robôs com arena 3D, minijogos por visão computacional e comandos para os robôs físicos. Este repositório reúne o código, os recursos da apresentação e os registros visuais do projeto.
 
-## O que acontece na apresentação
+## Da cinemática à batalha
 
 1. A câmera inicia a calibração da mão.
-2. O primeiro vídeo apresenta a história; um roteiro de comandos robóticos pode rodar em paralelo.
+2. A cinemática de abertura apresenta a história; um roteiro de comandos robóticos pode rodar em paralelo.
 3. O público escolhe **DinoByte** ou **PenLinux**.
 4. Uma sequência assíncrona movimenta o robô selecionado.
 5. O vídeo seguinte inicia o jogo 3D em outro processo.
-6. Após o jogo, a apresentação retorna ao ato final.
+6. Após o combate, a apresentação retorna ao ato final.
 
 A ordem, os tempos e os tipos de slide ficam em [`sequence.json`](sequence.json). O fluxo usa `asyncio` para coordenar a apresentação, e o jogo combina PySide6 com Panda3D.
 
-## Galeria
+## Galeria da apresentação
+
+| Cinemática de abertura | Entrada dos personagens |
+| --- | --- |
+| <img src="docs/screenshots/cinematica-abertura-2026.png" alt="Cena da cinemática de abertura" width="420" /> | <img src="docs/screenshots/abertura-dino-byte.png" alt="DinoByte na abertura" width="420" /> |
 
 | Arena | Início do combate |
 | --- | --- |
 | <img src="docs/screenshots/arena-dinobyte-penlinux.png" alt="DinoByte e PenLinux frente a frente na arena 3D" width="420" /> | <img src="docs/screenshots/inicio-combate.png" alt="Tela de início do combate na arena" width="420" /> |
 
-| Turno da IA | Abertura |
+| Turno da IA |
 | --- | --- |
-| <img src="docs/screenshots/interface-turno-ia.png" alt="Interface da batalha durante turno da IA, com vida e câmera" width="420" /> | <img src="docs/screenshots/abertura-dino-byte.png" alt="Cena de abertura DinoByte" width="420" /> |
+| <img src="docs/screenshots/interface-turno-ia.png" alt="Interface da batalha durante turno da IA, com vida e câmera" width="420" /> |
 
-Os quatro prints originais de 24 de julho de 2026 estão organizados em [`docs/screenshots/`](https://github.com/NycolasQG-DEV/OBR-2026-DinoByte-PenLinux/tree/main/docs/screenshots). Eles registram uma execução anterior; não são capturas produzidas pelos testes automatizados deste repositório.
+As fotos e capturas da apresentação estão em [`docs/screenshots/`](docs/screenshots/). As quatro imagens originais de 24 de julho de 2026 registram uma execução anterior; a imagem da cinemática foi adicionada depois.
+
+## Minijogos
+
+O combate inclui seis ataques interativos e um desafio de desvio. As imagens abaixo foram geradas pelas **interfaces reais do projeto**, em modo Qt `offscreen`, sem webcam, arena 3D ou ESP32. São prévias técnicas das telas, não registros de uma partida completa. [Como reproduzir as capturas](docs/MINIGAMES.md).
+
+| DinoByte: Mordida Jurássica | DinoByte: Sucção Jurássica |
+| --- | --- |
+| <img src="docs/screenshots/minigames/mordida-jurassica.png" alt="Interface de Mordida Jurássica com presas na tela" width="420" /> | <img src="docs/screenshots/minigames/succao-jurassica-instrucao.png" alt="Tela de instrução de Sucção Jurássica" width="420" /> |
+
+| DinoByte: Meteor Stomp | PenLinux: Dance Night |
+| --- | --- |
+| <img src="docs/screenshots/minigames/meteor-stomp-hud.png" alt="HUD de Meteor Stomp com pontuação e faixa do jogador" width="420" /> | <img src="docs/screenshots/minigames/dance-night.png" alt="Interface de Dance Night com pose de referência" width="420" /> |
+
+| PenLinux: Escudo de Gelo | PenLinux: Notas Musicais |
+| --- | --- |
+| <img src="docs/screenshots/minigames/escudo-de-gelo.png" alt="Interface de Escudo de Gelo com núcleos de gelo" width="420" /> | <img src="docs/screenshots/minigames/notas-musicais.png" alt="Interface de Notas Musicais com três faixas" width="420" /> |
+
+| Desvio do ataque do chefe |
+| --- |
+| <img src="docs/screenshots/minigames/desvio.png" alt="Tela do desafio de desvio com direção segura" width="420" /> |
+
+Em **Sucção Jurássica**, a captura mostra a instrução; o vórtice e as orbes são renderizados na arena 3D. Em **Meteor Stomp**, a captura mostra o HUD; os meteoros também são renderizados em 3D.
 
 ## Arquitetura
 
@@ -70,8 +96,8 @@ flowchart LR
 - ESP32 e configuração serial apenas para operar com os robôs físicos. O padrão `DEV_MODE = True` permite executar sem porta serial física.
 
 ```powershell
-git clone https://github.com/NycolasQG-DEV/OBR-2026-DinoByte-PenLinux.git
-cd OBR-2026-DinoByte-PenLinux
+git clone https://github.com/NycolasQG-DEV/OBR-Artistica-2026-Batalha-de-Robos.git
+cd OBR-Artistica-2026-Batalha-de-Robos
 git lfs pull
 py -m venv .venv
 .\.venv\Scripts\Activate.ps1
@@ -106,7 +132,9 @@ Em 3 de outubro de 2026, no Windows com Python 3.14.6:
 - Importação dos pontos de entrada `main.py` e `game/main.py` — **passou**.
 - Criação da janela PySide6 com plataforma `offscreen` — **passou**, com seis slides carregados.
 
-O fluxo completo com webcam, reprodução dos vídeos, renderização 3D e comunicação com o ESP32 **não foi validado neste teste automatizado**. Os prints acima mostram a interface em execução anterior, sem substituir a validação em hardware. A dependência `PyYAML` estava ausente no ambiente de teste; os testes citados não dependem dela.
+O fluxo completo com webcam, reprodução dos vídeos, renderização 3D e comunicação com o ESP32 **não foi validado neste teste automatizado**. As imagens da apresentação mostram uma execução anterior; as prévias dos minijogos são capturas isoladas das interfaces. Nenhuma substitui a validação em hardware. A dependência `PyYAML` estava ausente no ambiente de teste; os testes citados não dependem dela.
+
+As prévias de minijogos foram capturadas por `python scripts/capture_minigames.py` com a plataforma Qt `offscreen`. A geração das sete imagens passou; ela verifica a renderização das interfaces isoladas, sem testar gestos ou movimento dos robôs.
 
 ## Recursos e Git LFS
 
@@ -114,4 +142,4 @@ Vídeos `.mp4`, modelos `.glb` e modelos de visão `.task`/`.tflite` usam Git LF
 
 ## Créditos
 
-Desenvolvido por **Nycolas Queiroz Gimenez** para a apresentação da OBR 2026. O projeto inclui elementos da equipe Hortobots e personagens DinoByte e PenLinux. Este repositório documenta a versão regional da apresentação; não afirma premiação ou resultado competitivo.
+Desenvolvido por **Nycolas Queiroz Gimenez** para a OBR Artística 2026. O projeto inclui elementos da equipe Hortobots e os personagens DinoByte e PenLinux.
