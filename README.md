@@ -35,7 +35,7 @@ A ordem, os tempos e os tipos de slide ficam em [`sequence.json`](sequence.json)
 | --- | --- |
 | <img src="docs/screenshots/interface-turno-ia.png" alt="Interface da batalha durante turno da IA, com vida e câmera" width="420" /> | <img src="docs/screenshots/abertura-dino-byte.png" alt="Cena de abertura DinoByte" width="420" /> |
 
-Os quatro prints originais de 24 de julho de 2026 estão organizados em [`docs/screenshots/`](docs/screenshots/). Eles registram uma execução anterior; não são capturas produzidas pelos testes automatizados deste repositório.
+Os quatro prints originais de 24 de julho de 2026 estão organizados em [`docs/screenshots/`](https://github.com/NycolasQG-DEV/OBR-2026-DinoByte-PenLinux/tree/main/docs/screenshots). Eles registram uma execução anterior; não são capturas produzidas pelos testes automatizados deste repositório.
 
 ## Arquitetura
 
