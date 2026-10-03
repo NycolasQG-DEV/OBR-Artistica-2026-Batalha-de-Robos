@@ -25,7 +25,7 @@
       "order": 3,
       "type": "selection",
       "wait_next": 0,
-      "title": "SELEÇÃO DE CAMPEÃO (PENLINUX)"
+      "title": "SELEÇÃO DE CAMPEÃO (DINOBYTE OU PENLINUX)"
     },
     {
       "id": "robot_choose_sequence",

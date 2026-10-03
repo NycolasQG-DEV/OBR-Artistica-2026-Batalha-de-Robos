@@ -398,8 +398,8 @@ class RobotArena3D(ShowBase):
             self.battle._runner.start(execute_timeout_sequence(self, self.cam_ctrl, self.battle))
 
     def _show_select_screen(self):
-        """No-op: seleção de personagem removida. Robô é passado via argumento CLI."""
-        pass
+        if self.qt_win:
+            self.qt_win.show_select_screen()
 
     def setup_screens(self):
         from engine.screen_manager import ScreenManager
@@ -845,6 +845,7 @@ class RobotArena3D(ShowBase):
 
         self._battle_log = [("JOGO REINICIADO", time.time())]
         self._on_state_change(STATE_SELECT_ROBOT)
+        self._show_select_screen()
 
     def _add_log(self, msg: str):
         self._battle_log.append((msg, time.time()))

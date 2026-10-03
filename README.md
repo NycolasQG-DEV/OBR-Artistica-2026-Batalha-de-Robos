@@ -10,7 +10,7 @@
   <img src="https://img.shields.io/badge/ESP32-000000?style=for-the-badge&logo=espressif&logoColor=white" alt="ESP32" />
 </p>
 
-<p align="center"><img src="docs/screenshots/cinematica-abertura-2026.png" alt="Cena da cinemática de abertura exibida no telão da OBR Artística 2026" width="820" /></p>
+<p align="center"><img src="docs/screenshots/arena-vista-frontal.png" alt="PenLinux e DinoByte na arena 3D diante da Great Intelligence" width="820" /></p>
 
 Sistema integrado ao **telão da OBR Artística 2026**, na etapa regional. A apresentação começa com uma cinemática, envolve o público na escolha entre **DinoByte** e **PenLinux** e conduz uma batalha de robôs com arena 3D, minijogos por visão computacional e comandos para os robôs físicos. Este repositório reúne o código, os recursos da apresentação e os registros visuais do projeto.
 
@@ -27,19 +27,19 @@ A ordem, os tempos e os tipos de slide ficam em [`sequence.json`](sequence.json)
 
 ## Galeria da apresentação
 
-| Cinemática de abertura | Entrada dos personagens |
-| --- | --- |
-| <img src="docs/screenshots/cinematica-abertura-2026.png" alt="Cena da cinemática de abertura" width="420" /> | <img src="docs/screenshots/abertura-dino-byte.png" alt="DinoByte na abertura" width="420" /> |
-
-| Arena | Início do combate |
-| --- | --- |
-| <img src="docs/screenshots/arena-dinobyte-penlinux.png" alt="DinoByte e PenLinux frente a frente na arena 3D" width="420" /> | <img src="docs/screenshots/inicio-combate.png" alt="Tela de início do combate na arena" width="420" /> |
-
-| Turno da IA |
+| Escolha entre DinoByte e PenLinux |
 | --- |
-| <img src="docs/screenshots/interface-turno-ia.png" alt="Interface da batalha durante turno da IA, com vida e câmera" width="420" /> |
+| <img src="docs/screenshots/selecao-dinobyte-penlinux.png" alt="Tela de seleção com os cards de DinoByte e PenLinux" width="820" /> |
 
-As fotos e capturas da apresentação estão em [`docs/screenshots/`](docs/screenshots/). As quatro imagens originais de 24 de julho de 2026 registram uma execução anterior; a imagem da cinemática foi adicionada depois.
+| Calibração por gesto | Apresentação do PenLinux |
+| --- | --- |
+| <img src="docs/screenshots/calibracao-por-gesto.png" alt="Calibração da mão aberta pela câmera" width="420" /> | <img src="docs/screenshots/apresentacao-penlinux.png" alt="Cena de apresentação do PenLinux" width="420" /> |
+
+| Arena: vista frontal | Arena: vista diagonal |
+| --- | --- |
+| <img src="docs/screenshots/arena-vista-frontal.png" alt="Arena 3D com PenLinux, DinoByte e Great Intelligence" width="420" /> | <img src="docs/screenshots/arena-vista-diagonal.png" alt="Visão diagonal da batalha na arena 3D" width="420" /> |
+
+As novas capturas da apresentação e da seleção estão em [`docs/screenshots/`](docs/screenshots/). A cena da cinemática anterior permanece no acervo do projeto.
 
 ## Minijogos
 
@@ -62,6 +62,16 @@ O combate inclui seis ataques interativos e um desafio de desvio. As imagens aba
 | <img src="docs/screenshots/minigames/desvio.png" alt="Tela do desafio de desvio com direção segura" width="420" /> |
 
 Em **Sucção Jurássica**, a captura mostra a instrução; o vórtice e as orbes são renderizados na arena 3D. Em **Meteor Stomp**, a captura mostra o HUD; os meteoros também são renderizados em 3D.
+
+### Ataques de DinoByte
+
+| Ataque | Entrada no jogo | Efeito |
+| --- | --- | --- |
+| **Mordida Jurássica** | Alinhar as mãos e fechar para morder as presas. | Dano de base: 16. |
+| **Sucção Jurássica** | Virar a cabeça para sugar orbes no vórtice 3D. | Dano de base: 18. |
+| **Meteor Stomp** | Mover a cabeça entre as posições e coletar meteoros. | Dano de base: 20. |
+
+DinoByte e PenLinux podem ser escolhidos na apresentação por clique ou mantendo a mão sobre o card por 3 segundos. Ao iniciar o jogo isoladamente sem `--robot`, a seleção também aparece na tela. O ataque do turno é sorteado entre os três do personagem, sem repetir até completar o ciclo.
 
 ## Arquitetura
 
@@ -107,6 +117,8 @@ python main.py
 
 Execute `python main.py` **na raiz do repositório**. Alguns recursos do jogo usam caminhos relativos. A primeira etapa aguarda a câmera e a calibração; sem webcam, o fluxo completo pode não avançar automaticamente.
 
+Para abrir apenas a batalha, execute `python game/main.py` e escolha DinoByte ou PenLinux na tela. Para iniciar diretamente com um personagem, use `python game/main.py --robot DinoByte` ou `python game/main.py --robot PenLinux`.
+
 ### Controles da apresentação
 
 | Tecla | Ação |
@@ -128,9 +140,12 @@ Em [`sequence.json`](sequence.json), cada slide define tipo, ordem, fonte e espe
 Em 3 de outubro de 2026, no Windows com Python 3.14.6:
 
 - `python -m compileall -q main.py config.py engine players game robot_choose_sequence.py robot_sequence.py tests` — **passou**.
-- `python -m unittest discover -s tests -v` — **2 testes passaram**: referências da sequência e destino dos comandos de cada personagem.
+- `python -m unittest discover -s tests -v` — **4 testes passaram**: referências da sequência, comandos por personagem, seleção de DinoByte e registro dos três ataques.
 - Importação dos pontos de entrada `main.py` e `game/main.py` — **passou**.
 - Criação da janela PySide6 com plataforma `offscreen` — **passou**, com seis slides carregados.
+- Seleção por clique e permanência do cursor no card de DinoByte — **passou**; a escolha foi propagada para o controle da apresentação.
+- Jogo 3D inicializado com DinoByte como jogador e PenLinux como adversário — **passou** em modo de simulação serial.
+- Os ataques `atk0` (Mordida Jurássica), `atk1` (Sucção Jurássica) e `atk2` (Meteor Stomp) chegaram aos respectivos fluxos — **passou**. A seleção de PenLinux também foi conferida.
 
 O fluxo completo com webcam, reprodução dos vídeos, renderização 3D e comunicação com o ESP32 **não foi validado neste teste automatizado**. As imagens da apresentação mostram uma execução anterior; as prévias dos minijogos são capturas isoladas das interfaces. Nenhuma substitui a validação em hardware. A dependência `PyYAML` estava ausente no ambiente de teste; os testes citados não dependem dela.
 

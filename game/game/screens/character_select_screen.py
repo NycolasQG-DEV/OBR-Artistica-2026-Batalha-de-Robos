@@ -56,13 +56,10 @@ class CharacterSelectScreen(QWidget, BaseScreen):
         
         # We need self.card_pen and self.card_dino properties specifically because main.py updates their hover state on CV input!
         self.card_pen = None
-        self.card_cow = None  # Leave as None/dummy to avoid any key errors
         self.card_dino = None
 
         for opt in ROBOT_OPTIONS:
             name = opt["name"]
-            if name == "DinoByte":
-                continue
             color = opt["color"]
             desc = opt["desc"]
             icon = icons.get(name, "*")
@@ -78,6 +75,8 @@ class CharacterSelectScreen(QWidget, BaseScreen):
             
             if name == "PenLinux":
                 self.card_pen = card
+            elif name == "DinoByte":
+                self.card_dino = card
 
         main_layout.addLayout(self.cards_layout)
         self.scale_ui(1.0)

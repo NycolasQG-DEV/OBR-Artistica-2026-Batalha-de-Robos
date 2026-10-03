@@ -29,22 +29,22 @@ class DinoByteRobot(RobotBase):
     ATTACKS = ["attack_jurassic_bite", "attack_tail_quake", "attack_meteor_stomp"]
     ATTACK_META = {
         "attack_jurassic_bite": {
-            "name": "Jurassic Bite",
+            "name": "Mordida Jurássica",
             "damage": 16,
             "triggers_minigame": True,
-            "description": ["JURASSIC BITE", "16 dmg"],
+            "description": ["MORDIDA JURÁSSICA", "16 dmg", "Mãos: morder as presas"],
         },
         "attack_tail_quake": {
-            "name": "Tail Quake",
+            "name": "Sucção Jurássica",
             "damage": 18,
             "triggers_minigame": False,
-            "description": ["TAIL QUAKE", "18 dmg", "Esquiva necessária"],
+            "description": ["SUCÇÃO JURÁSSICA", "18 dmg", "Cabeça: sugar orbes"],
         },
         "attack_meteor_stomp": {
             "name": "Meteor Stomp",
             "damage": 20,
             "triggers_minigame": True,
-            "description": ["METEOR STOMP", "20 dmg"],
+            "description": ["METEOR STOMP", "20 dmg", "Cabeça: coletar meteoros"],
         }
     }
 

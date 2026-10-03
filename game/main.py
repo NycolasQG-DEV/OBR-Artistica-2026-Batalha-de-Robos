@@ -25,6 +25,7 @@ from engine.platform.win32_window import force_foreground_simple
 from engine.app_core import RobotArena3D
 
 from game.screens.battle_screen import BattleScreen
+from game.screens.character_select_screen import CharacterSelectScreen
 from ui.hud import (
     BossHPBarOverlay, PlayerHUDOverlay, ActionsHUDOverlay, CVCursorWidget,
     MinigameInstructionOverlay, AttackMinigameOverlay, RoboticVisionOverlay,
@@ -57,10 +58,13 @@ class GameWindow(QMainWindow, WindowBootstrapMixin):
         self.stacked_widget = QStackedWidget(self)
         self.setCentralWidget(self.stacked_widget)
 
-        # Tela de batalha — único widget do stacked (index 0)
-        # Seleção de personagem removida: robô é passado via argumento CLI --robot
+        # HUD transitions expect selection at index 0 and battle at index 1.
+        self.select_screen = CharacterSelectScreen(self, self)
+        self.select_screen.robot_chosen.connect(self._on_robot_chosen)
+        self.stacked_widget.addWidget(self.select_screen)  # index 0
         self.panda_container = BattleScreen(self)
-        self.stacked_widget.addWidget(self.panda_container)  # index 0
+        self.stacked_widget.addWidget(self.panda_container)  # index 1
+        self.stacked_widget.setCurrentWidget(self.panda_container)
 
         # Floating HUD Overlays
         self.boss_hp_overlay = BossHPBarOverlay(self)
@@ -129,8 +133,7 @@ class GameWindow(QMainWindow, WindowBootstrapMixin):
         self.panda_app.qt_win = self
         self.panda_app.setup_screens()
 
-        # Mostra a tela de batalha diretamente (sem seleção de personagem)
-        self.stacked_widget.setCurrentIndex(0)
+        self.stacked_widget.setCurrentWidget(self.panda_container)
         QApplication.processEvents()
 
         # Start deferred synchronizations to align windows properly
@@ -148,11 +151,16 @@ class GameWindow(QMainWindow, WindowBootstrapMixin):
     # ── Callbacks ─────────────────────────────────────────────────────
 
     def _on_robot_chosen(self, name):
-        """Dispara a batalha com o robô escolhido (chamado programaticamente pelo CLI)."""
-        if self.panda_app:
-            from settings import ROBOT_OPTIONS
-            opt = next((o for o in ROBOT_OPTIONS if o["name"].lower() == name.lower()), ROBOT_OPTIONS[0])
-            self.panda_app._on_robot_selected(opt)
+        """Starts the battle with the selected champion."""
+        if not self.panda_app or self.panda_app.battle.player_robot:
+            return
+        from settings import ROBOT_OPTIONS
+        opt = next((o for o in ROBOT_OPTIONS if o["name"].lower() == name.lower()), None)
+        if opt is None:
+            raise ValueError(f"Robô desconhecido: {name}")
+        self.stacked_widget.setCurrentWidget(self.panda_container)
+        QApplication.processEvents()
+        self.panda_app._on_robot_selected(opt)
 
     def _on_action_clicked(self, key):
         self._hovered_widget = None
@@ -281,8 +289,9 @@ class GameWindow(QMainWindow, WindowBootstrapMixin):
             self.player_hud_overlay.minigame_timer_bar.setValue(int(frac * 100))
 
     def show_select_screen(self):
-        """No-op: seleção de personagem removida. Robô é escolhido via argumento CLI."""
-        pass
+        """Shows both champions for standalone play and game resets."""
+        self.stacked_widget.setCurrentWidget(self.select_screen)
+        self.select_screen.on_enter()
 
     # ── Debug overlay (Ctrl+D / F12) ────────────────────────────────────
 
@@ -370,21 +379,21 @@ if __name__ == "__main__":
     import argparse
     QCoreApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
 
-    # ── Argumento CLI: --robot <nome> (Padrão: PenLinux) ─────────────────────
+    # ── Argumento CLI: --robot <nome> (sem argumento, mostra seleção) ────────
     # Uso: python main.py --robot PenLinux
     #       python main.py --robot DinoByte
     parser = argparse.ArgumentParser(description="Robot Arena 3D")
     parser.add_argument(
         "--robot",
         type=str,
-        default="PenLinux",
+        default=None,
         required=False,
         choices=["DinoByte", "PenLinux", "dinobyte", "penlinux"],
-        help="Robô escolhido para a batalha (DinoByte ou PenLinux, padrão: PenLinux)",
+        help="Robô escolhido para a batalha (DinoByte ou PenLinux; sem opção, mostra seleção)",
     )
     args, _unknown = parser.parse_known_args()
-    chosen_robot = args.robot or "PenLinux"
-    print(f"[main.py] Robô selecionado: {chosen_robot}")
+    chosen_robot = args.robot
+    print(f"[main.py] Robô selecionado: {chosen_robot or 'aguardando escolha'}")
 
     q_app = QApplication(sys.argv)
 
@@ -396,10 +405,11 @@ if __name__ == "__main__":
 
     win = GameWindow()
 
-    # ── Inicia a batalha automaticamente com o robô escolhido via CLI ────────────
-    # Um pequeno delay (300ms) garante que o Panda3D já renderizou o primeiro frame
-    # antes de disparar a seqüência de intro e sincronizar os nós 3D dos robôs.
-    QTimer.singleShot(300, lambda: win._on_robot_chosen(chosen_robot))
+    # Wait for Panda3D's first frame before the selected champion enters.
+    if chosen_robot:
+        QTimer.singleShot(300, lambda: win._on_robot_chosen(chosen_robot))
+    else:
+        QTimer.singleShot(300, win.show_select_screen)
 
     panda_timer = QTimer()
     panda_timer.setInterval(0)

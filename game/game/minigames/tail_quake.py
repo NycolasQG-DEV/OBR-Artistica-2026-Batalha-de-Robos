@@ -147,8 +147,12 @@ async def execute_tail_quake_attack(robot, target, ability, final_damage, camera
             layer["node"].setR(layer["node"].getR() + layer["rot_speed"] * layer["rot_dir"] * dt)
         
         # Controle discreto de direção em 3 zonas (usando landmark padronizado de cabeça)
-        cv = getattr(app.game_instance, "cv_input", None)
-        if cv and hasattr(cv, "get_head_position"):
+        game = app.game_instance
+        cv = getattr(game, "cv_input", None)
+        cursor = getattr(game, "_finger_pos_norm", None)
+        if getattr(game, "_input_mode", "cv") == "mouse" and cursor:
+            face_x = cursor[0]
+        elif cv and hasattr(cv, "get_head_position"):
             face_x, _ = cv.get_head_position()
         else:
             face_x = getattr(cv, "face_x", 0.5) if cv else 0.5

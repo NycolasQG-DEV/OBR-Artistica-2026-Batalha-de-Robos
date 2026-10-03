@@ -18,6 +18,7 @@ def game_loop(app, task):
     # CV Input
     cv_pos = None
     cv_hand_closed = False
+    is_tail_active = False
     is_stomp_active = False
     is_symphony_active = False
     if app.cv_input is not None:
@@ -61,7 +62,7 @@ def game_loop(app, task):
             mouse_moved = True
 
     if cv_pos is not None:
-        if app.battle.state == STATE_MINIGAME or is_stomp_active or is_symphony_active:
+        if app.battle.state == STATE_MINIGAME or is_tail_active or is_stomp_active or is_symphony_active:
             if not mouse_moved and app._input_mode != "mouse":
                 app._input_mode = "cv"
             app._last_cv_pos = cv_pos

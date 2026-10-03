@@ -145,7 +145,7 @@ class SelectionSlidePlayer(BaseSlidePlayer):
         self.selected_champion = None
         self.is_confirmed = False
 
-        self.penlinux_hover = 0.0
+        self.hover_times = {"DinoByte": 0.0, "PenLinux": 0.0}
         self.last_update_t = time.time()
 
         self.setMouseTracking(True)
@@ -172,12 +172,23 @@ class SelectionSlidePlayer(BaseSlidePlayer):
 
         self.layout.addLayout(header_vbox)
 
-        # Horizontal Cards Container (Centraliza o card único do PenLinux)
+        # Both champions use the same click and hand-hover selection flow.
         self.cards_hbox = QHBoxLayout()
-        self.cards_hbox.setSpacing(0)
+        self.cards_hbox.setSpacing(28)
         self.cards_hbox.setAlignment(Qt.AlignCenter)
 
-        # PenLinux Card Button (Centralizado na tela)
+        self.btn_dinobyte = ChampionCardButton(
+            name="DinoByte",
+            code="DINOBYTE",
+            role="POWER STRIKER",
+            color_hex="#ff9900",
+            accent_hex="#ff4400",
+            stats={"VELOCIDADE": 70, "AGILIDADE": 75, "FORÇA": 95},
+            desc="Mordida Jurássica, Sucção Jurássica e Meteor Stomp.",
+            parent=self,
+        )
+        self.btn_dinobyte.clicked.connect(lambda: self._confirm_selection("DinoByte"))
+
         self.btn_penlinux = ChampionCardButton(
             name="PenLinux",
             code="PENLINUX",
@@ -191,7 +202,8 @@ class SelectionSlidePlayer(BaseSlidePlayer):
         self.btn_penlinux.clicked.connect(lambda: self._confirm_selection("PenLinux"))
 
         self.cards_hbox.addStretch(1)
-        self.cards_hbox.addWidget(self.btn_penlinux, stretch=2)
+        self.cards_hbox.addWidget(self.btn_dinobyte, stretch=1)
+        self.cards_hbox.addWidget(self.btn_penlinux, stretch=1)
         self.cards_hbox.addStretch(1)
 
         self.layout.addLayout(self.cards_hbox, stretch=1)
@@ -236,7 +248,7 @@ class SelectionSlidePlayer(BaseSlidePlayer):
                 print(f"[SelectionPlayer] Erro ao iniciar CVCursorWidget: {e}")
 
     async def play(self):
-        self.penlinux_hover = 0.0
+        self.hover_times = {"DinoByte": 0.0, "PenLinux": 0.0}
         self.is_confirmed = False
         self.last_update_t = time.time()
 
@@ -313,21 +325,21 @@ class SelectionSlidePlayer(BaseSlidePlayer):
         # Find target widget under cursor position
         target_widget = QApplication.widgetAt(global_pos)
 
-        pen_rect = self.btn_penlinux.geometry()
-        hover_pen = pen_rect.contains(cx, cy) or (target_widget and (target_widget == self.btn_penlinux or self.btn_penlinux.isAncestorOf(target_widget)))
-
         active_pct = 0.0
-
-        if hover_pen:
-            self.penlinux_hover += dt
-            active_pct = min(100.0, (self.penlinux_hover / 3.0) * 100.0)
-            self.btn_penlinux.set_hover_progress(active_pct)
-
-            if self.penlinux_hover >= 3.0:
-                self._confirm_selection("PenLinux")
-        else:
-            self.penlinux_hover = 0.0
-            self.btn_penlinux.set_hover_progress(0.0)
+        for name, button in (("DinoByte", self.btn_dinobyte), ("PenLinux", self.btn_penlinux)):
+            hover = button.geometry().contains(cx, cy) or bool(
+                target_widget and (target_widget == button or button.isAncestorOf(target_widget))
+            )
+            if hover:
+                self.hover_times[name] += dt
+                active_pct = min(100.0, self.hover_times[name] / 3.0 * 100.0)
+                button.set_hover_progress(active_pct)
+                if self.hover_times[name] >= 3.0:
+                    self._confirm_selection(name)
+                    return
+            else:
+                self.hover_times[name] = 0.0
+                button.set_hover_progress(0.0)
 
         # Update Sci-Fi CVCursorWidget overlay on screen
         if self.cv_cursor:
@@ -344,6 +356,8 @@ class SelectionSlidePlayer(BaseSlidePlayer):
         super().paintEvent(event)
 
     def _confirm_selection(self, champion_name: str):
+        if self.is_confirmed:
+            return
         self.is_confirmed = True
         self.selected_champion = champion_name
         self.timer.stop()

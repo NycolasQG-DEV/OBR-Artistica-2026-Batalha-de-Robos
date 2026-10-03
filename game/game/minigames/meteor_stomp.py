@@ -133,13 +133,19 @@ class MeteorStompMinigame(BaseAttackMinigame):
 
     def get_camera_x(self) -> float:
         """Obtém a posição X horizontal da câmera (0.0 = Esquerda, 1.0 = Direita)."""
+        if app.game_instance and getattr(app.game_instance, "_input_mode", None) == "mouse":
+            cursor = getattr(app.game_instance, "_finger_pos_norm", None)
+            if cursor and cursor[0] is not None:
+                return float(cursor[0])
+
         if app.game_instance and hasattr(app.game_instance, "cv_input") and app.game_instance.cv_input:
             cv = app.game_instance.cv_input
             cv.face_detection_enabled = True
 
             if hasattr(cv, "get_head_position"):
                 fx, _ = cv.get_head_position()
-                return fx
+                if fx is not None:
+                    return float(fx)
             if hasattr(cv, "face_x") and cv.face_x is not None:
                 return float(cv.face_x)
 
