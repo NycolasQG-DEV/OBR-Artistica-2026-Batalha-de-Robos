@@ -19,12 +19,4 @@ Esta pasta registra as interfaces dos minijogos da batalha de robôs da OBR Art�
 - **Meteor Stomp:** mostra o HUD Qt. Os meteoros e seus efeitos dependem da cena Panda3D.
 - **Desvio:** mostra a variante esquerda/direita selecionada atualmente pela lógica da batalha. O código do overlay também contém outras variantes, mas a partida ativa a variante 0.
 
-## Reproduzir
-
-No Windows, após instalar [`requirements.txt`](../requirements.txt), execute na raiz do repositório:
-
-```powershell
-python scripts/capture_minigames.py
-```
-
-O script grava PNGs de 1920 × 1080 em `docs/screenshots/minigames/`. Ele carrega fontes do Windows explicitamente porque a plataforma Qt `offscreen` não as detectou automaticamente durante a captura. Não é necessário conectar ESP32 ou webcam.
+As imagens têm 1920 × 1080 pixels. Na captura, fontes do Windows foram carregadas explicitamente porque o Qt `offscreen` não as detectou automaticamente. A captura não exigiu ESP32 nem webcam.

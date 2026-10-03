@@ -43,7 +43,7 @@ As novas capturas da apresentação e da seleção estão em [`docs/screenshots/
 
 ## Minijogos
 
-O combate inclui seis ataques interativos e um desafio de desvio. As imagens abaixo foram geradas pelas **interfaces reais do projeto**, em modo Qt `offscreen`, sem webcam, arena 3D ou ESP32. São prévias técnicas das telas, não registros de uma partida completa. [Como reproduzir as capturas](docs/MINIGAMES.md).
+O combate inclui seis ataques interativos e um desafio de desvio. As imagens abaixo foram geradas pelas **interfaces reais do projeto**, em modo Qt `offscreen`, sem webcam, arena 3D ou ESP32. São prévias técnicas das telas, não registros de uma partida completa. [Detalhes das capturas](docs/MINIGAMES.md).
 
 | DinoByte: Mordida Jurássica | DinoByte: Sucção Jurássica |
 | --- | --- |
@@ -149,7 +149,7 @@ Em 3 de outubro de 2026, no Windows com Python 3.14.6:
 
 O fluxo completo com webcam, reprodução dos vídeos, renderização 3D e comunicação com o ESP32 **não foi validado neste teste automatizado**. As imagens da apresentação mostram uma execução anterior; as prévias dos minijogos são capturas isoladas das interfaces. Nenhuma substitui a validação em hardware. A dependência `PyYAML` estava ausente no ambiente de teste; os testes citados não dependem dela.
 
-As prévias de minijogos foram capturadas por `python scripts/capture_minigames.py` com a plataforma Qt `offscreen`. A geração das sete imagens passou; ela verifica a renderização das interfaces isoladas, sem testar gestos ou movimento dos robôs.
+As sete prévias de minijogos foram capturadas com a plataforma Qt `offscreen`. Elas verificam a renderização das interfaces isoladas, sem testar gestos ou movimento dos robôs.
 
 ## Recursos e Git LFS
 
