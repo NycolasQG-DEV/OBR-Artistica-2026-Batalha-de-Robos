@@ -1,0 +1,24 @@
+{
+  "model_file": "dinobyte.glb",
+  "texture_file": "DinoByte_Texture.png",
+  "scale": 1.5,
+  "rotation": [
+    0.0,
+    90.0,
+    0.0
+  ],
+  "offset": [
+    0.0,
+    0.0,
+    0.76
+  ],
+  "pivot_offset": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "rendering": {
+    "shader_vertex": "",
+    "shader_fragment": ""
+  }
+}

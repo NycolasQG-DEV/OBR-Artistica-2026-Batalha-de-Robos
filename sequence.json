@@ -1,0 +1,58 @@
+{
+  "title": "Apresentação Multimídia Assíncrona",
+  "loop": false,
+  "default_wait_next": 5.0,
+  "slides": [
+    {
+      "id": "slide_hand_calibration",
+      "order": 1,
+      "type": "calibration",
+      "wait_next": 0,
+      "title": "CALIBRAÇÃO DE VISÃO - ESTENDA A MÃO"
+    },
+    {
+      "id": "act1-pt1",
+      "order": 2,
+      "type": "video",
+      "wait_next": 57.0,
+      "title": "ATO1",
+      "src": "assets/ATO1-pt1.mp4",
+      "serial_script": true,
+      "caption": "Vídeo sincronizado com movimentação serial em segundo plano"
+    },
+    {
+      "id": "slide_selection",
+      "order": 3,
+      "type": "selection",
+      "wait_next": 0,
+      "title": "SELEÇÃO DE CAMPEÃO (PENLINUX)"
+    },
+    {
+      "id": "robot_choose_sequence",
+      "order": 4,
+      "type": "serial",
+      "wait_next": 0,
+      "title": "SEQUÊNCIA ROBÓTICA",
+      "src": "robot_choose_sequence.py"
+    },
+    {
+      "id": "act1-pt2",
+      "order": 5,
+      "type": "video",
+      "wait_next": 5.0,
+      "title": "ATO1",
+      "src": "assets/ATO1-pt2.mp4",
+      "caption": "Vídeo sincronizado com canal de áudio nativo",
+      "launch_game": true
+    },
+    {
+      "id": "act3",
+      "order": 6,
+      "type": "video",
+      "wait_next": 0,
+      "title": "ATO3",
+      "src": "assets/ATO3.mp4",
+      "caption": "Ato 3 - Pós-Jogo"
+    }
+  ]
+}

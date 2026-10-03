@@ -1,0 +1,8 @@
+pyside6>=6.5.0
+panda3d>=1.10.13
+qasync>=0.27.0
+PyYAML>=6.0
+opencv-python>=4.8.0
+numpy>=1.24.0
+mediapipe>=0.10.0
+pyserial>=3.5
